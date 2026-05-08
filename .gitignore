@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Contornos virtuais
+venv/
+.env/
+
+# IDEs
+.vscode/
+.idea/
+
+# Base de datos (se usas SQLite local)
+*.db
+*.sqlite3
