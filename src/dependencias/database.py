@@ -1,19 +1,21 @@
+import logging
 from pymongo import MongoClient
+from config.configuracion import Configuracion
 
-class DatabaseConnection:
+logger = logging.getLogger("AppSalud.ConexionBaseDatos")
+
+class ConexionBaseDatos:
     def __init__(self):
         try:
-            # Nos conectamos a localhost en el puerto por defecto de MongoDB
-            self.client = MongoClient("mongodb://localhost:27017/", serverSelectionTimeoutMS=2000)
-            # Forzamos una llamada para verificar que hay conexión
-            self.client.server_info()
-            # Seleccionamos la base de datos mi_app
-            self.db = self.client["mi_app"]
-            print("Conectado a MongoDB ('mi_app') exitosamente.")
+            # Conexión usando valores de configuración externa
+            self.client = MongoClient(Configuracion.MONGODB_URI, serverSelectionTimeoutMS=2000)
+            self.client.server_info() # Verificar conexión activa
+            self.db = self.client[Configuracion.DATABASE_NAME]
+            logger.info(f"Conectado a MongoDB ('{Configuracion.DATABASE_NAME}') exitosamente.")
         except Exception as e:
-            print(f"Error al conectar con MongoDB: {e}")
+            logger.error(f"Error al conectar con MongoDB: {e}")
             self.client = None
             self.db = None
 
-    def get_db(self):
+    def obtener_db(self):
         return self.db
